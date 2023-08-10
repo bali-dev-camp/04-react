@@ -1,18 +1,32 @@
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Flex } from '@mantine/core';
+
+import { AppShell, useMantineTheme } from '@mantine/core';
 
 import NavbarMain from '../components/navbar';
 import { HeaderMain } from '../components/header';
 
 export default function LayoutMain() {
-  return (
-    <Flex direction="row">
-      <NavbarMain />
+  const theme = useMantineTheme();
+  const [opened, setOpened] = useState(false);
 
-      <Flex direction="column" w={'100%'}>
-        <HeaderMain />
-        <Outlet />
-      </Flex>
-    </Flex>
+  return (
+    <AppShell
+      layout="alt"
+      styles={{
+        main: {
+          background:
+            theme.colorScheme === 'dark'
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
+        },
+      }}
+      navbarOffsetBreakpoint="sm"
+      asideOffsetBreakpoint="sm"
+      navbar={<NavbarMain status={!opened} />}
+      header={<HeaderMain />}
+    >
+      <Outlet />
+    </AppShell>
   );
 }

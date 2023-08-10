@@ -1,31 +1,29 @@
-import { createStyles, Header, Group, Burger, rem, Title } from '@mantine/core';
+import {
+  Header,
+  Burger,
+  Title,
+  MediaQuery,
+  useMantineTheme,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-const useStyles = createStyles((theme) => ({
-  header: {
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-  },
-
-  inner: {
-    height: rem(56),
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-}));
-
 export function HeaderMain() {
+  const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
-  const { classes } = useStyles();
 
   return (
-    <Header height={56} className={classes.header}>
-      <div className={classes.inner}>
-        <Group>
-          <Burger opened={opened} onClick={toggle} size="sm" />
-          <Title order={4}>Dasboard</Title>
-        </Group>
+    <Header height={{ base: 50, md: 70 }} p="md">
+      <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+          <Burger
+            opened={opened}
+            size="sm"
+            color={theme.colors.gray[6]}
+            mr="xl"
+          />
+        </MediaQuery>
+
+        <Title order={4}>Dasboard</Title>
       </div>
     </Header>
   );

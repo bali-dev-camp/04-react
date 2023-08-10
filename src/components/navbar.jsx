@@ -92,7 +92,7 @@ const data = [
   { link: '/category', label: 'Category', icon: IconCategory },
 ];
 
-export default function NavbarMain() {
+export default function NavbarMain({ status }) {
   const navigate = useNavigate();
 
   const { classes, cx } = useStyles();
@@ -117,7 +117,13 @@ export default function NavbarMain() {
   ));
 
   return (
-    <Navbar height={'100vh'} width={{ sm: 280 }} p="md">
+    <Navbar
+      p="md"
+      hiddenBreakpoint="sm"
+      height="100vh"
+      width={{ sm: 200, lg: 300 }}
+      hidden={status}
+    >
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           <Flex direction="row" align="center" gap="sm">

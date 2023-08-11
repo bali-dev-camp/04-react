@@ -5,12 +5,15 @@ import {
   Group,
   NumberInput,
   Radio,
+  Select,
   TextInput,
   Title,
 } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
 export default function ShoeCreate() {
+  const categoryOptions = ['Sport', 'Casual', 'Party', 'School'];
+
   return (
     <div>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -19,22 +22,48 @@ export default function ShoeCreate() {
         </Title>
 
         <Link to="/shoe">
-          <Button leftIcon={<IconArrowBack />}>Back</Button>
+          <Button variant="outline" leftIcon={<IconArrowBack />}>
+            Back
+          </Button>
         </Link>
       </Flex>
 
       <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <TextInput withAsterisk label="Name" placeholder="Input shoe name" />
+        <TextInput
+          withAsterisk
+          size="md"
+          label="Name"
+          placeholder="Input shoe name"
+        />
 
-        <TextInput withAsterisk label="Brand" placeholder="Input shoe brand" />
+        <TextInput
+          withAsterisk
+          size="md"
+          label="Brand"
+          placeholder="Input shoe brand"
+        />
+
+        <Select
+          label="Category"
+          placeholder="Please choose one"
+          withAsterisk
+          size="md"
+          data={categoryOptions}
+        />
 
         <NumberInput
           withAsterisk
+          size="md"
           label="Quantity"
           placeholder="Input shoe qty"
         />
 
-        <Radio.Group name="availability" label="Shoe Availability" withAsterisk>
+        <Radio.Group
+          name="availability"
+          label="Shoe Availability"
+          withAsterisk
+          size="md"
+        >
           <Group mt="xs">
             <Radio value="true" label="Yes" />
             <Radio value="false" label="No" />

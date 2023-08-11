@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Badge, Button, Flex, Table, Title } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
+import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
 const elements = [
   { name: 'Dark Night', brand: 'Nike', qty: 20, availability: true },
@@ -29,6 +29,7 @@ export default function ShoeList() {
             <th>Brand</th>
             <th>Quantity</th>
             <th>Availability</th>
+            <th>Action</th>
           </tr>
         </thead>
 
@@ -46,6 +47,31 @@ export default function ShoeList() {
                 ) : (
                   <Badge color="red">No</Badge>
                 )}
+              </td>
+              <td>
+                <Flex gap="sm">
+                  <ActionIcon
+                    component="a"
+                    href="/shoe/1/detail"
+                    variant="filled"
+                    color="green"
+                  >
+                    <IconEye size={20} />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    component="a"
+                    href="/shoe/1/edit"
+                    variant="filled"
+                    color="edit"
+                  >
+                    <IconPencil size={20} />
+                  </ActionIcon>
+
+                  <ActionIcon variant="filled" color="red">
+                    <IconTrash size={20} />
+                  </ActionIcon>
+                </Flex>
               </td>
             </tr>
           ))}

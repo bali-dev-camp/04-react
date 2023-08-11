@@ -23,8 +23,10 @@ export default function LayoutMain() {
       }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      navbar={<NavbarMain status={!opened} />}
-      header={<HeaderMain />}
+      navbar={
+        <NavbarMain status={!opened} onToggle={(val) => setOpened(val)} />
+      }
+      header={<HeaderMain onToggle={(val) => setOpened(val)} />}
     >
       <Outlet />
     </AppShell>

@@ -9,12 +9,14 @@ import {
   rem,
   Title,
   Flex,
+  MediaQuery,
 } from '@mantine/core';
 import {
   IconDashboard,
   IconShoe,
   IconCategory,
   IconLogout,
+  IconX,
 } from '@tabler/icons-react';
 
 const useStyles = createStyles((theme) => ({
@@ -92,7 +94,7 @@ const data = [
   { link: '/category', label: 'Category', icon: IconCategory },
 ];
 
-export default function NavbarMain({ status }) {
+export default function NavbarMain({ status, onToggle }) {
   const navigate = useNavigate();
 
   const { classes, cx } = useStyles();
@@ -126,9 +128,20 @@ export default function NavbarMain({ status }) {
     >
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
-          <Flex direction="row" align="center" gap="sm">
-            <IconShoe size={30} strokeWidth={2} />
-            <Title order={3}>BDC Shoe</Title>
+          <Flex
+            direction="row"
+            align="center"
+            justify="space-between"
+            style={{ width: '100%' }}
+          >
+            <Flex direction="row" align="center" gap="sm">
+              <IconShoe size={30} strokeWidth={2} />
+              <Title order={3}>BDC Shoe</Title>
+            </Flex>
+
+            <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+              <IconX size={30} strokeWidth={2} onClick={() => onToggle()} />
+            </MediaQuery>
           </Flex>
         </Group>
 

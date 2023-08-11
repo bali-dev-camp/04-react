@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Badge, Button, Flex, Table, Title } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 
@@ -11,15 +12,17 @@ const elements = [
 export default function ShoeList() {
   return (
     <div>
-      <Flex direction="row" align="center" justify="space-between">
+      <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Shoe List
         </Title>
 
-        <Button leftIcon={<IconPlus />}>Add</Button>
+        <Link to="/shoe/create">
+          <Button leftIcon={<IconPlus />}>Add</Button>
+        </Link>
       </Flex>
 
-      <Table mt="md">
+      <Table>
         <thead>
           <tr>
             <th>Name</th>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-
-import { AppShell, useMantineTheme } from '@mantine/core';
+import { AppShell, Container, useMantineTheme } from '@mantine/core';
 
 import NavbarMain from '../components/navbar';
 import { HeaderMain } from '../components/header';
@@ -28,7 +27,9 @@ export default function LayoutMain() {
       }
       header={<HeaderMain onToggle={(val) => setOpened(val)} />}
     >
-      <Outlet />
+      <Container size="xl">
+        <Outlet />
+      </Container>
     </AppShell>
   );
 }

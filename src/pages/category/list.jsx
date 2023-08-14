@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom';
-import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
+import { ActionIcon, Button, Flex, Table, Title } from '@mantine/core';
 import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
 const elements = [
-  { name: 'Dark Night', brand: 'Nike', qty: 20, availability: true },
-  { name: 'Pink Venom', brand: 'Adidas', qty: 0, availability: false },
-  { name: 'Blue Guard', brand: 'Vans', qty: 11, availability: true },
-  { name: 'Purple Shy', brand: 'Swallow', qty: 2, availability: true },
+  { name: 'Sport' },
+  { name: 'Casual' },
+  { name: 'School' },
+  { name: 'Adventure' },
 ];
 
-export default function ShoeList() {
+export default function CategoryList() {
   return (
     <div>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
-          Shoe List
+          Category List
         </Title>
 
-        <Link to="/shoe/create">
+        <Link to="/category/create">
           <Button leftIcon={<IconPlus />}>Add</Button>
         </Link>
       </Flex>
@@ -26,9 +26,6 @@ export default function ShoeList() {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Brand</th>
-            <th>Quantity</th>
-            <th>Availability</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -37,17 +34,6 @@ export default function ShoeList() {
           {elements.map((element) => (
             <tr key={element.name}>
               <td>{element.name}</td>
-              <td>{element.brand}</td>
-              <td>
-                <Badge>{element.qty}</Badge>
-              </td>
-              <td>
-                {element.availability ? (
-                  <Badge color="green">Yes</Badge>
-                ) : (
-                  <Badge color="red">No</Badge>
-                )}
-              </td>
               <td style={{ width: 150 }}>
                 <Flex gap="sm">
                   <ActionIcon

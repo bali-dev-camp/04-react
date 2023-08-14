@@ -1,15 +1,6 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import {
-  createStyles,
-  Navbar,
-  Group,
-  getStylesRef,
-  rem,
-  Title,
-  Flex,
-  MediaQuery,
-} from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { Navbar, Group, Title, Flex, MediaQuery, NavLink } from '@mantine/core';
 import {
   IconDashboard,
   IconShoe,
@@ -17,62 +8,6 @@ import {
   IconLogout,
   IconX,
 } from '@tabler/icons-react';
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    paddingBottom: theme.spacing.md,
-    marginBottom: `calc(${theme.spacing.md} * 1.5)`,
-    borderBottom: `${rem(1)} solid ${theme.colors.gray[2]}`,
-  },
-
-  footer: {
-    paddingTop: theme.spacing.md,
-    marginTop: theme.spacing.md,
-    borderTop: `${rem(1)} solid ${theme.colors.gray[2]}`,
-  },
-
-  link: {
-    ...theme.fn.focusStyles(),
-    display: 'flex',
-    alignItems: 'center',
-    textDecoration: 'none',
-    fontSize: theme.fontSizes.sm,
-    color: theme.colors.gray[7],
-    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-    borderRadius: theme.radius.sm,
-    fontWeight: 500,
-
-    '&:hover': {
-      backgroundColor: theme.colors.gray[0],
-      color: theme.black,
-
-      [`& .${getStylesRef('icon')}`]: {
-        color: theme.black,
-      },
-    },
-  },
-
-  linkIcon: {
-    ref: getStylesRef('icon'),
-    color: theme.colors.gray[6],
-    marginRight: theme.spacing.sm,
-  },
-
-  linkActive: {
-    '&, &:hover': {
-      backgroundColor: theme.fn.variant({
-        variant: 'light',
-        color: theme.primaryColor,
-      }).background,
-      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
-        .color,
-      [`& .${getStylesRef('icon')}`]: {
-        color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
-          .color,
-      },
-    },
-  },
-}));
 
 const data = [
   { link: '/', label: 'Dashboard', icon: IconDashboard },
@@ -83,25 +18,19 @@ const data = [
 export default function NavbarMain({ status, onToggle }) {
   const navigate = useNavigate();
 
-  const { classes, cx } = useStyles();
   const [active, setActive] = useState('Dashboard');
 
   const links = data.map((item) => (
     <NavLink
-      className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
-      })}
-      to={item.link}
       key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        navigate(item.link);
+      active={item.label === active}
+      label={item.label}
+      icon={<item.icon />}
+      onClick={() => {
         setActive(item.label);
+        navigate(item.link);
       }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </NavLink>
+    />
   ));
 
   return (
@@ -113,7 +42,13 @@ export default function NavbarMain({ status, onToggle }) {
       hidden={status}
     >
       <Navbar.Section grow>
-        <Group className={classes.header} position="apart">
+        <Group
+          style={{
+            marginBottom: 24,
+            borderBottom: '1px solid lightgray',
+            paddingBottom: 24,
+          }}
+        >
           <Flex
             direction="row"
             align="center"
@@ -134,15 +69,14 @@ export default function NavbarMain({ status, onToggle }) {
         {links}
       </Navbar.Section>
 
-      <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
+      <Navbar.Section
+        style={{
+          marginTop: 24,
+          borderTop: '1px solid lightgray',
+          paddingTop: 24,
+        }}
+      >
+        <NavLink label="Logout" icon={<IconLogout />} />
       </Navbar.Section>
     </Navbar>
   );

@@ -1,15 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
 import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
-const elements = [
-  { name: 'Dark Night', brand: 'Nike', qty: 20, availability: true },
-  { name: 'Pink Venom', brand: 'Adidas', qty: 0, availability: false },
-  { name: 'Blue Guard', brand: 'Vans', qty: 11, availability: true },
-  { name: 'Purple Shy', brand: 'Swallow', qty: 2, availability: true },
-];
+export async function loader() {
+  const response = await fetch('http://localhost:3000/shoe');
+  const json = await response.json();
 
-export default function ShoeList() {
+  return {
+    shoes: json,
+  };
+}
+
+function ShoeList() {
+  const data = useLoaderData();
+
   return (
     <div>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -34,15 +38,15 @@ export default function ShoeList() {
         </thead>
 
         <tbody>
-          {elements.map((element) => (
-            <tr key={element.name}>
-              <td>{element.name}</td>
-              <td>{element.brand}</td>
+          {data.shoes.map((item) => (
+            <tr key={item.id}>
+              <td>{item.name}</td>
+              <td>{item.merk}</td>
               <td>
-                <Badge>{element.qty}</Badge>
+                <Badge>{item.qty}</Badge>
               </td>
               <td>
-                {element.availability ? (
+                {item.available ? (
                   <Badge color="green">Yes</Badge>
                 ) : (
                   <Badge color="red">No</Badge>
@@ -52,7 +56,7 @@ export default function ShoeList() {
                 <Flex gap="sm">
                   <ActionIcon
                     component="a"
-                    href="/shoe/1/detail"
+                    href={`/shoe/${item.id}/detail`}
                     variant="filled"
                     color="green"
                   >
@@ -61,7 +65,7 @@ export default function ShoeList() {
 
                   <ActionIcon
                     component="a"
-                    href="/shoe/1/edit"
+                    href={`/shoe/${item.id}/edit`}
                     variant="filled"
                     color="edit"
                   >
@@ -80,3 +84,5 @@ export default function ShoeList() {
     </div>
   );
 }
+
+export default ShoeList;

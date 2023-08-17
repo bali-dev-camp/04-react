@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, redirect, Form } from 'react-router-dom';
 import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
 import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
@@ -9,6 +9,13 @@ export async function loader() {
   return {
     shoes: json,
   };
+}
+
+export async function action({ params }) {
+  await fetch(`http://localhost:3000/shoe/${params.id}`, {
+    method: 'DELETE',
+  });
+  return redirect('/shoe');
 }
 
 function ShoeList() {
@@ -72,9 +79,11 @@ function ShoeList() {
                     <IconPencil size={20} />
                   </ActionIcon>
 
-                  <ActionIcon variant="filled" color="red">
-                    <IconTrash size={20} />
-                  </ActionIcon>
+                  <Form method="delete" action={`/shoe/${item.id}/delete`}>
+                    <ActionIcon variant="filled" color="red" type="submit">
+                      <IconTrash size={20} />
+                    </ActionIcon>
+                  </Form>
                 </Flex>
               </td>
             </tr>

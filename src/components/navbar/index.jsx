@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar, Group, Title, Flex, MediaQuery } from '@mantine/core';
 import {
   IconDashboard,
@@ -19,21 +19,24 @@ const data = [
 
 export default function NavbarMain({ status, onToggle }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState('Dashboard');
+  const [activeNav, setActiveNav] = useState(
+    `/${location.pathname.split('/')[1]}`
+  );
 
   const links = data.map((item) => (
     <NavLink
       className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
+        [classes.linkActive]: item.link === activeNav,
       })}
       to={item.link}
       key={item.label}
       onClick={(event) => {
         event.preventDefault();
         navigate(item.link);
-        setActive(item.label);
+        setActiveNav(item.link);
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />

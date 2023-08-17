@@ -1,19 +1,26 @@
-import { Link } from 'react-router-dom';
+import { Link, Form, redirect } from 'react-router-dom';
 import {
   Button,
   Flex,
   Group,
   NumberInput,
   Radio,
-  Select,
   TextInput,
   Title,
 } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
-export default function ShoeCreate() {
-  const categoryOptions = ['Sport', 'Casual', 'Party', 'School'];
+export async function action({ request }) {
+  const formData = await request.formData();
+  await fetch('http://localhost:3000/shoe', {
+    method: 'POST',
+    body: formData,
+  });
 
+  return redirect('/shoe');
+}
+
+export default function ShoeCreate() {
   return (
     <div>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -28,12 +35,17 @@ export default function ShoeCreate() {
         </Link>
       </Flex>
 
-      <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Form
+        method="post"
+        action="/shoe/create"
+        style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+      >
         <TextInput
           withAsterisk
           size="md"
           label="Name"
           placeholder="Input shoe name"
+          name="name"
         />
 
         <TextInput
@@ -41,14 +53,7 @@ export default function ShoeCreate() {
           size="md"
           label="Brand"
           placeholder="Input shoe brand"
-        />
-
-        <Select
-          label="Category"
-          placeholder="Please choose one"
-          withAsterisk
-          size="md"
-          data={categoryOptions}
+          name="merk"
         />
 
         <NumberInput
@@ -56,13 +61,14 @@ export default function ShoeCreate() {
           size="md"
           label="Quantity"
           placeholder="Input shoe qty"
+          name="qty"
         />
 
         <Radio.Group
-          name="availability"
           label="Shoe Availability"
           withAsterisk
           size="md"
+          name="available"
         >
           <Group mt="xs">
             <Radio value="true" label="Yes" />
@@ -73,7 +79,7 @@ export default function ShoeCreate() {
         <Group position="left" mt="md">
           <Button type="submit">Submit</Button>
         </Group>
-      </form>
+      </Form>
     </div>
   );
 }

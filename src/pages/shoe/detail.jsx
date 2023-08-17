@@ -1,10 +1,21 @@
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { Button, Flex, Title, Image, Text, Badge, Group } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
 import imgShoe from '../../assets/images/shoe-example.jpg';
 
+export async function loader({ params }) {
+  const response = await fetch(`http://localhost:3000/shoe/${params.id}`);
+  const json = await response.json();
+
+  return {
+    shoe: json,
+  };
+}
+
 export default function ShoeDetail() {
+  const data = useLoaderData();
+
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -25,14 +36,17 @@ export default function ShoeDetail() {
         <Flex direction="column" gap="xs">
           <Flex direction="column" gap="xs" style={{ width: 500 }}>
             <Flex>
-              <Badge color="blue"> Sport Shoe</Badge>
-              <Badge color="green">Available</Badge>
+              {data.shoe.available ? (
+                <Badge color="green">Available</Badge>
+              ) : (
+                <Badge color="red">Unavailable</Badge>
+              )}
             </Flex>
 
-            <Title order={1}>Nike Happy Orange</Title>
+            <Title order={1}>{data.shoe.name}</Title>
 
             <Text size="xl" fs="italic">
-              Quantity: 12
+              Quantity: {data.shoe.qty}
             </Text>
 
             <Title order={2} color="blue">
@@ -49,7 +63,7 @@ export default function ShoeDetail() {
           <Group position="left" mt="sm">
             <Button
               component="a"
-              href="/shoe/1/edit"
+              href={`/shoe/${data.shoe.id}/edit`}
               type="submit"
               color="gray"
               variant="outline"

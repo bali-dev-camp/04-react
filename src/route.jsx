@@ -1,22 +1,29 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter } from 'react-router-dom';
 
 import LayoutMain from './layouts/main';
-import Home from './pages/home';
+import PageHome from './pages/home';
 
-import ShoeList, {
+import PageShoeList, {
   loader as shoesLoader,
   action as shoeDeleteAction,
 } from './pages/shoe/list';
-import ShoeDetail, { loader as shoesDetailLoader } from './pages/shoe/detail';
-import ShoeCreate, { action as shoeCreateAction } from './pages/shoe/create';
-import ShoeEdit, {
+
+import PageShoeDetail, {
+  loader as shoeDetailLoader,
+} from './pages/shoe/detail';
+
+import PageShoeCreate, {
+  action as shoeCreateAction,
+} from './pages/shoe/create';
+
+import PageShoeEdit, {
   loader as shoeEditLoader,
   action as shoeEditAction,
 } from './pages/shoe/edit';
 
-import CategoryList from './pages/category/list';
-import CategoryCreate from './pages/category/create';
-import CategoryEdit from './pages/category/edit';
+import PageCategoryList from './pages/category/list';
+import PageCategoryCreate from './pages/category/create';
+import PageCategoryEdit from './pages/category/edit';
 
 const router = createBrowserRouter([
   {
@@ -25,44 +32,57 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <PageHome />,
       },
       {
         path: '/shoe',
-        element: <ShoeList />,
-        loader: shoesLoader,
-      },
-      {
-        path: '/shoe/:id/detail',
-        element: <ShoeDetail />,
-        loader: shoesDetailLoader,
-      },
-      {
-        path: '/shoe/create',
-        element: <ShoeCreate />,
-        action: shoeCreateAction,
-      },
-      {
-        path: '/shoe/:id/edit',
-        element: <ShoeEdit />,
-        loader: shoeEditLoader,
-        action: shoeEditAction,
-      },
-      {
-        path: '/shoe/:id/delete',
-        action: shoeDeleteAction,
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <PageShoeList />,
+            loader: shoesLoader,
+          },
+          {
+            path: '/shoe/:id/detail',
+            element: <PageShoeDetail />,
+            loader: shoeDetailLoader,
+          },
+
+          {
+            path: '/shoe/create',
+            element: <PageShoeCreate />,
+            action: shoeCreateAction,
+          },
+          {
+            path: '/shoe/:id/edit',
+            element: <PageShoeEdit />,
+            loader: shoeEditLoader,
+            action: shoeEditAction,
+          },
+          {
+            path: '/shoe/:id/delete',
+            action: shoeDeleteAction,
+          },
+        ],
       },
       {
         path: '/category',
-        element: <CategoryList />,
-      },
-      {
-        path: '/category/create',
-        element: <CategoryCreate />,
-      },
-      {
-        path: '/category/:id/edit',
-        element: <CategoryEdit />,
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <PageCategoryList />,
+          },
+          {
+            path: '/category/create',
+            element: <PageCategoryCreate />,
+          },
+          {
+            path: '/category/:id/edit',
+            element: <PageCategoryEdit />,
+          },
+        ],
       },
     ],
   },

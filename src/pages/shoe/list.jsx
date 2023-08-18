@@ -18,19 +18,19 @@ export async function action({ params }) {
   return redirect('/shoe');
 }
 
-function ShoeList() {
+export default function PageShoeList() {
   const data = useLoaderData();
 
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Shoe List
         </Title>
 
-        <Link to="/shoe/create">
-          <Button leftIcon={<IconPlus />}>Add</Button>
-        </Link>
+        <Button component={Link} to="/shoe/create" leftIcon={<IconPlus />}>
+          Add
+        </Button>
       </Flex>
 
       <Table>
@@ -62,8 +62,8 @@ function ShoeList() {
               <td style={{ width: 150 }}>
                 <Flex gap="sm">
                   <ActionIcon
-                    component="a"
-                    href={`/shoe/${item.id}/detail`}
+                    component={Link}
+                    to={`/shoe/${item.id}/detail`}
                     variant="filled"
                     color="green"
                   >
@@ -71,8 +71,8 @@ function ShoeList() {
                   </ActionIcon>
 
                   <ActionIcon
-                    component="a"
-                    href={`/shoe/${item.id}/edit`}
+                    component={Link}
+                    to={`/shoe/${item.id}/edit`}
                     variant="filled"
                     color="edit"
                   >
@@ -90,8 +90,6 @@ function ShoeList() {
           ))}
         </tbody>
       </Table>
-    </div>
+    </>
   );
 }
-
-export default ShoeList;

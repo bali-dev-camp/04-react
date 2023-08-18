@@ -13,7 +13,7 @@ export async function loader({ params }) {
   };
 }
 
-export default function ShoeDetail() {
+export default function PageShoeDetail() {
   const data = useLoaderData();
 
   return (
@@ -23,11 +23,14 @@ export default function ShoeDetail() {
           Detail Shoe
         </Title>
 
-        <Link to="/shoe">
-          <Button variant="outline" leftIcon={<IconArrowBack />}>
-            Back
-          </Button>
-        </Link>
+        <Button
+          component={Link}
+          to="/shoe"
+          variant="outline"
+          leftIcon={<IconArrowBack />}
+        >
+          Back
+        </Button>
       </Flex>
 
       <Flex align="center" gap="xl">
@@ -50,21 +53,16 @@ export default function ShoeDetail() {
             </Text>
 
             <Title order={2} color="blue">
-              Rp 200.000
+              Rp {data.shoe.price}
             </Title>
 
-            <Text size="md">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industrys standard dummy text
-              ever since the 1500s
-            </Text>
+            <Text size="md">{data.shoe.desc}</Text>
           </Flex>
 
           <Group position="left" mt="sm">
             <Button
-              component="a"
-              href={`/shoe/${data.shoe.id}/edit`}
-              type="submit"
+              component={Link}
+              to={`/shoe/${data.shoe.id}/edit`}
               color="gray"
               variant="outline"
             >

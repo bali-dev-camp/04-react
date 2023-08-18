@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Navbar, Group, Title, Flex, MediaQuery } from '@mantine/core';
 import {
   IconDashboard,
@@ -11,38 +10,14 @@ import {
 
 import { useStyles } from './style';
 
-const data = [
+const links = [
   { link: '/', label: 'Dashboard', icon: IconDashboard },
   { link: '/shoe', label: 'Shoes', icon: IconShoe },
   { link: '/category', label: 'Category', icon: IconCategory },
 ];
 
 export default function NavbarMain({ status, onToggle }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const { classes, cx } = useStyles();
-  const [activeNav, setActiveNav] = useState(
-    `/${location.pathname.split('/')[1]}`
-  );
-
-  const links = data.map((item) => (
-    <NavLink
-      className={cx(classes.link, {
-        [classes.linkActive]: item.link === activeNav,
-      })}
-      to={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        navigate(item.link);
-        setActiveNav(item.link);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </NavLink>
-  ));
 
   return (
     <Navbar
@@ -71,7 +46,20 @@ export default function NavbarMain({ status, onToggle }) {
           </Flex>
         </Group>
 
-        {links}
+        {links.map((item) => (
+          <NavLink
+            className={({ isActive }) =>
+              cx(classes.link, {
+                [classes.linkActive]: isActive,
+              })
+            }
+            to={item.link}
+            key={item.label}
+          >
+            <item.icon className={classes.linkIcon} stroke={1.5} />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>

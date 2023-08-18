@@ -9,17 +9,17 @@ const elements = [
   { name: 'Adventure' },
 ];
 
-export default function CategoryList() {
+export default function PageCategoryList() {
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Category List
         </Title>
 
-        <Link to="/category/create">
-          <Button leftIcon={<IconPlus />}>Add</Button>
-        </Link>
+        <Button component={Link} to="/category/create" leftIcon={<IconPlus />}>
+          Add
+        </Button>
       </Flex>
 
       <Table>
@@ -38,7 +38,7 @@ export default function CategoryList() {
                 <Flex gap="sm">
                   <ActionIcon
                     component="a"
-                    href="/shoe/1/edit"
+                    href="/category/1/edit"
                     variant="filled"
                     color="edit"
                   >
@@ -54,6 +54,6 @@ export default function CategoryList() {
           ))}
         </tbody>
       </Table>
-    </div>
+    </>
   );
 }

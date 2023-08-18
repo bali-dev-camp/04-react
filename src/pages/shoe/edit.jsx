@@ -6,6 +6,7 @@ import {
   NumberInput,
   Radio,
   TextInput,
+  Textarea,
   Title,
 } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
@@ -21,29 +22,37 @@ export async function loader({ params }) {
 
 export async function action({ request, params }) {
   const formData = await request.formData();
+  const payload = Object.fromEntries(formData);
+  console.log(payload);
   await fetch(`http://localhost:3000/shoe/${params.id}`, {
     method: 'PUT',
-    body: formData,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
   });
 
   return redirect('/shoe');
 }
 
-export default function ShoeEdit() {
+export default function PageShoeEdit() {
   const data = useLoaderData();
 
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Edit Shoe
         </Title>
 
-        <Link to="/shoe">
-          <Button variant="outline" leftIcon={<IconArrowBack />}>
-            Back
-          </Button>
-        </Link>
+        <Button
+          component={Link}
+          to="/shoe"
+          variant="outline"
+          leftIcon={<IconArrowBack />}
+        >
+          Back
+        </Button>
       </Flex>
 
       <Form
@@ -78,6 +87,24 @@ export default function ShoeEdit() {
           defaultValue={data.shoe.qty}
         />
 
+        <NumberInput
+          withAsterisk
+          size="md"
+          label="Price"
+          placeholder="Input shoe price"
+          name="price"
+          defaultValue={data.shoe.price}
+        />
+
+        <Textarea
+          withAsterisk
+          size="md"
+          placeholder="Input shoe desc"
+          label="Description"
+          name="desc"
+          defaultValue={data.shoe.desc}
+        />
+
         <Radio.Group
           label="Shoe Availability"
           withAsterisk
@@ -95,6 +122,6 @@ export default function ShoeEdit() {
           <Button type="submit">Submit</Button>
         </Group>
       </Form>
-    </div>
+    </>
   );
 }

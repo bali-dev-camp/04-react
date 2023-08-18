@@ -2,19 +2,22 @@ import { Link } from 'react-router-dom';
 import { Button, Flex, Group, TextInput, Title } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
-export default function CategoryCreate() {
+export default function PageCategoryCreate() {
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Add Category
         </Title>
 
-        <Link to="/category">
-          <Button variant="outline" leftIcon={<IconArrowBack />}>
-            Back
-          </Button>
-        </Link>
+        <Button
+          component={Link}
+          to="/category"
+          variant="outline"
+          leftIcon={<IconArrowBack />}
+        >
+          Back
+        </Button>
       </Flex>
 
       <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -29,6 +32,6 @@ export default function CategoryCreate() {
           <Button type="submit">Submit</Button>
         </Group>
       </form>
-    </div>
+    </>
   );
 }

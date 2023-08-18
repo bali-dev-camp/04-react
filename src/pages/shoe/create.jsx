@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
-export default function ShoeCreate() {
+export default function PageShoeCreate() {
   const categoryOptions = ['Sport', 'Casual', 'Party', 'School'];
 
   return (
@@ -21,11 +21,14 @@ export default function ShoeCreate() {
           Add Shoe
         </Title>
 
-        <Link to="/shoe">
-          <Button variant="outline" leftIcon={<IconArrowBack />}>
-            Back
-          </Button>
-        </Link>
+        <Button
+          component={Link}
+          to="/shoe"
+          variant="outline"
+          leftIcon={<IconArrowBack />}
+        >
+          Back
+        </Button>
       </Flex>
 
       <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

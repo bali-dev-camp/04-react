@@ -9,17 +9,17 @@ const elements = [
   { name: 'Purple Shy', brand: 'Swallow', qty: 2, availability: true },
 ];
 
-export default function ShoeList() {
+export default function PageShoeList() {
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Shoe List
         </Title>
 
-        <Link to="/shoe/create">
-          <Button leftIcon={<IconPlus />}>Add</Button>
-        </Link>
+        <Button component={Link} to="/shoe/create" leftIcon={<IconPlus />}>
+          Add
+        </Button>
       </Flex>
 
       <Table>
@@ -51,8 +51,8 @@ export default function ShoeList() {
               <td style={{ width: 150 }}>
                 <Flex gap="sm">
                   <ActionIcon
-                    component="a"
-                    href="/shoe/1/detail"
+                    component={Link}
+                    to="/shoe/1/detail"
                     variant="filled"
                     color="green"
                   >
@@ -60,8 +60,8 @@ export default function ShoeList() {
                   </ActionIcon>
 
                   <ActionIcon
-                    component="a"
-                    href="/shoe/1/edit"
+                    component={Link}
+                    to="/shoe/1/edit"
                     variant="filled"
                     color="edit"
                   >
@@ -77,6 +77,6 @@ export default function ShoeList() {
           ))}
         </tbody>
       </Table>
-    </div>
+    </>
   );
 }

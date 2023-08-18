@@ -1,28 +1,45 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter } from 'react-router-dom';
 
 import LayoutMain from './layouts/main';
-import Home from './pages/home';
-import ShoeList from './pages/shoe/list';
-import ShoeDetail from './pages/shoe/detail';
-import ShoeCreate from './pages/shoe/create';
-import ShoeEdit from './pages/shoe/edit';
-import CategoryList from './pages/category/list';
-import CategoryCreate from './pages/category/create';
-import CategoryEdit from './pages/category/edit';
+import PageHome from './pages/home';
+
+import PageShoeList from './pages/shoe/list';
+import PageShoeDetail from './pages/shoe/detail';
+import PageShoeCreate from './pages/shoe/create';
+import PageShoeEdit from './pages/shoe/edit';
+
+import PageCategoryList from './pages/category/list';
+import PageCategoryCreate from './pages/category/create';
+import PageCategoryEdit from './pages/category/edit';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <LayoutMain />,
     children: [
-      { index: true, element: <Home /> },
-      { path: '/shoe', element: <ShoeList /> },
-      { path: '/shoe/:id/detail', element: <ShoeDetail /> },
-      { path: '/shoe/create', element: <ShoeCreate /> },
-      { path: '/shoe/:id/edit', element: <ShoeEdit /> },
-      { path: '/category', element: <CategoryList /> },
-      { path: '/category/create', element: <CategoryCreate /> },
-      { path: '/category/:id/edit', element: <CategoryEdit /> },
+      {
+        index: true,
+        element: <PageHome />,
+      },
+      {
+        path: '/shoe',
+        element: <Outlet />,
+        children: [
+          { index: true, element: <PageShoeList /> },
+          { path: '/shoe/:id/detail', element: <PageShoeDetail /> },
+          { path: '/shoe/create', element: <PageShoeCreate /> },
+          { path: '/shoe/:id/edit', element: <PageShoeEdit /> },
+        ],
+      },
+      {
+        path: '/category',
+        element: <Outlet />,
+        children: [
+          { index: true, element: <PageCategoryList /> },
+          { path: '/category/create', element: <PageCategoryCreate /> },
+          { path: '/category/:id/edit', element: <PageCategoryEdit /> },
+        ],
+      },
     ],
   },
 ]);

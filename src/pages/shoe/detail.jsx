@@ -4,7 +4,7 @@ import { IconArrowBack } from '@tabler/icons-react';
 
 import imgShoe from '../../assets/images/shoe-example.jpg';
 
-export default function ShoeDetail() {
+export default function PageShoeDetail() {
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -12,11 +12,14 @@ export default function ShoeDetail() {
           Detail Shoe
         </Title>
 
-        <Link to="/shoe">
-          <Button variant="outline" leftIcon={<IconArrowBack />}>
-            Back
-          </Button>
-        </Link>
+        <Button
+          component={Link}
+          to="/shoe"
+          variant="outline"
+          leftIcon={<IconArrowBack />}
+        >
+          Back
+        </Button>
       </Flex>
 
       <Flex align="center" gap="xl">

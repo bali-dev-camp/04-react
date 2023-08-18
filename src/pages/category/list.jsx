@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ActionIcon, Button, Flex, Table, Title } from '@mantine/core';
-import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
 const elements = [
   { name: 'Sport' },
@@ -9,17 +9,17 @@ const elements = [
   { name: 'Adventure' },
 ];
 
-export default function CategoryList() {
+export default function PageCategoryList() {
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Category List
         </Title>
 
-        <Link to="/category/create">
-          <Button leftIcon={<IconPlus />}>Add</Button>
-        </Link>
+        <Button component={Link} to="/category/create" leftIcon={<IconPlus />}>
+          Add
+        </Button>
       </Flex>
 
       <Table>
@@ -38,16 +38,7 @@ export default function CategoryList() {
                 <Flex gap="sm">
                   <ActionIcon
                     component="a"
-                    href="/shoe/1/detail"
-                    variant="filled"
-                    color="green"
-                  >
-                    <IconEye size={20} />
-                  </ActionIcon>
-
-                  <ActionIcon
-                    component="a"
-                    href="/shoe/1/edit"
+                    href="/category/1/edit"
                     variant="filled"
                     color="edit"
                   >
@@ -63,6 +54,6 @@ export default function CategoryList() {
           ))}
         </tbody>
       </Table>
-    </div>
+    </>
   );
 }

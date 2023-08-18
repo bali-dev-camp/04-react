@@ -1,19 +1,8 @@
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  Flex,
-  Group,
-  NumberInput,
-  Radio,
-  Select,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import { Button, Flex, Group, TextInput, Title } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
 export default function CategoryEdit() {
-  const categoryOptions = ['Sport', 'Casual', 'Party', 'School'];
-
   return (
     <div>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -21,7 +10,7 @@ export default function CategoryEdit() {
           Edit Category
         </Title>
 
-        <Link to="/shoe">
+        <Link to="/category">
           <Button variant="outline" leftIcon={<IconArrowBack />}>
             Back
           </Button>
@@ -33,42 +22,8 @@ export default function CategoryEdit() {
           withAsterisk
           size="md"
           label="Name"
-          placeholder="Input shoe name"
+          placeholder="Input category name"
         />
-
-        <TextInput
-          withAsterisk
-          size="md"
-          label="Brand"
-          placeholder="Input shoe brand"
-        />
-
-        <Select
-          label="Category"
-          placeholder="Please choose one"
-          withAsterisk
-          size="md"
-          data={categoryOptions}
-        />
-
-        <NumberInput
-          withAsterisk
-          size="md"
-          label="Quantity"
-          placeholder="Input shoe qty"
-        />
-
-        <Radio.Group
-          name="availability"
-          label="Shoe Availability"
-          withAsterisk
-          size="md"
-        >
-          <Group mt="xs">
-            <Radio value="true" label="Yes" />
-            <Radio value="false" label="No" />
-          </Group>
-        </Radio.Group>
 
         <Group position="left" mt="md">
           <Button type="submit">Submit</Button>

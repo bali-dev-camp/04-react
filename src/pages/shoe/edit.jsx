@@ -1,10 +1,4 @@
-import {
-  Link,
-  Form,
-  useParams,
-  redirect,
-  useLoaderData,
-} from 'react-router-dom';
+import { Link, Form, redirect, useLoaderData } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -36,7 +30,6 @@ export async function action({ request, params }) {
 }
 
 export default function ShoeEdit() {
-  const params = useParams();
   const data = useLoaderData();
 
   return (
@@ -55,7 +48,7 @@ export default function ShoeEdit() {
 
       <Form
         method="put"
-        action={`/shoe/${params.id}/edit`}
+        action={`/shoe/${data.shoe.id}/edit`}
         style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
       >
         <TextInput

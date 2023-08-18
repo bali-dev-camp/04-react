@@ -1,3 +1,5 @@
+import { Title } from '@mantine/core';
+
 export default function Home() {
-  return <p>Home Page</p>;
+  return <Title size="h2">Welcome to BDC Shoe 👋</Title>;
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ActionIcon, Button, Flex, Table, Title } from '@mantine/core';
-import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
 const elements = [
   { name: 'Sport' },
@@ -36,15 +36,6 @@ export default function CategoryList() {
               <td>{element.name}</td>
               <td style={{ width: 150 }}>
                 <Flex gap="sm">
-                  <ActionIcon
-                    component="a"
-                    href="/shoe/1/detail"
-                    variant="filled"
-                    color="green"
-                  >
-                    <IconEye size={20} />
-                  </ActionIcon>
-
                   <ActionIcon
                     component="a"
                     href="/shoe/1/edit"

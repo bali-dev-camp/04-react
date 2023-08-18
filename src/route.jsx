@@ -52,9 +52,18 @@ const router = createBrowserRouter([
         path: '/shoe/:id/delete',
         action: shoeDeleteAction,
       },
-      { path: '/category', element: <CategoryList /> },
-      { path: '/category/create', element: <CategoryCreate /> },
-      { path: '/category/:id/edit', element: <CategoryEdit /> },
+      {
+        path: '/category',
+        element: <CategoryList />,
+      },
+      {
+        path: '/category/create',
+        element: <CategoryCreate />,
+      },
+      {
+        path: '/category/:id/edit',
+        element: <CategoryEdit />,
+      },
     ],
   },
 ]);

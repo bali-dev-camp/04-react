@@ -27,7 +27,7 @@ export async function action({ request }) {
 
 export default function PageShoeCreate() {
   return (
-    <div>
+    <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
         <Title order={3} color="blue.5">
           Add Shoe
@@ -104,6 +104,6 @@ export default function PageShoeCreate() {
           <Button type="submit">Submit</Button>
         </Group>
       </Form>
-    </div>
+    </>
   );
 }

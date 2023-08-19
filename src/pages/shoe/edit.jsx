@@ -5,15 +5,13 @@ import {
   Group,
   NumberInput,
   Radio,
-  Select,
   TextInput,
+  Textarea,
   Title,
 } from '@mantine/core';
 import { IconArrowBack } from '@tabler/icons-react';
 
 export default function PageShoeEdit() {
-  const categoryOptions = ['Sport', 'Casual', 'Party', 'School'];
-
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -37,6 +35,7 @@ export default function PageShoeEdit() {
           size="md"
           label="Name"
           placeholder="Input shoe name"
+          name="name"
         />
 
         <TextInput
@@ -44,14 +43,7 @@ export default function PageShoeEdit() {
           size="md"
           label="Brand"
           placeholder="Input shoe brand"
-        />
-
-        <Select
-          label="Category"
-          placeholder="Please choose one"
-          withAsterisk
-          size="md"
-          data={categoryOptions}
+          name="merk"
         />
 
         <NumberInput
@@ -59,13 +51,30 @@ export default function PageShoeEdit() {
           size="md"
           label="Quantity"
           placeholder="Input shoe qty"
+          name="qty"
+        />
+
+        <NumberInput
+          withAsterisk
+          size="md"
+          label="Price"
+          placeholder="Input shoe price"
+          name="price"
+        />
+
+        <Textarea
+          withAsterisk
+          size="md"
+          placeholder="Input shoe desc"
+          label="Description"
+          name="desc"
         />
 
         <Radio.Group
-          name="availability"
           label="Shoe Availability"
           withAsterisk
           size="md"
+          name="available"
         >
           <Group mt="xs">
             <Radio value="true" label="Yes" />

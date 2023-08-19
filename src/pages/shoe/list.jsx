@@ -63,7 +63,7 @@ export default function PageShoeList() {
                     component={Link}
                     to="/shoe/1/edit"
                     variant="filled"
-                    color="edit"
+                    color="blue"
                   >
                     <IconPencil size={20} />
                   </ActionIcon>

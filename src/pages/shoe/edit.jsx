@@ -5,25 +5,37 @@ import {
   useActionData,
   Form,
   useNavigation,
-} from "react-router-dom";
+} from 'react-router-dom';
 import {
   Button,
   Flex,
   Group,
   NumberInput,
   Radio,
+  Select,
   TextInput,
   Textarea,
   Title,
-} from "@mantine/core";
-import { IconArrowBack } from "@tabler/icons-react";
+} from '@mantine/core';
+import { IconArrowBack } from '@tabler/icons-react';
 
 export async function loader({ params }) {
-  const response = await fetch(`http://localhost:3000/shoe/${params.id}`);
-  const shoe = await response.json();
+  const [shoeResponse, categoryResponse] = await Promise.all([
+    fetch(`http://localhost:3000/shoe/${params.id}`),
+    fetch('http://localhost:3000/category'),
+  ]);
+
+  const shoe = await shoeResponse.json();
+  const categories = await categoryResponse.json();
+
+  const categoryOptions = categories.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }));
 
   return {
     shoe,
+    categoryOptions,
   };
 }
 
@@ -33,12 +45,12 @@ export async function action({ request, params }) {
 
   const errors = {};
 
-  if (Number(formData.get("qty")) < 1) {
-    errors.qty = "Qty should be more than zero";
+  if (Number(formData.get('qty')) < 1) {
+    errors.qty = 'Qty should be more than zero';
   }
 
-  if (Number(formData.get("price")) < 0) {
-    errors.price = "Price should be start from zero";
+  if (Number(formData.get('price')) < 0) {
+    errors.price = 'Price should be start from zero';
   }
 
   if (Object.keys(errors).length > 0) {
@@ -46,14 +58,14 @@ export async function action({ request, params }) {
   }
 
   await fetch(`http://localhost:3000/shoe/${params.id}`, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
   });
 
-  return redirect("/shoe");
+  return redirect('/shoe');
 }
 
 export default function PageShoeEdit() {
@@ -61,7 +73,7 @@ export default function PageShoeEdit() {
   const errors = useActionData();
 
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  const isSubmitting = navigation.state === 'submitting';
 
   return (
     <>
@@ -82,7 +94,7 @@ export default function PageShoeEdit() {
 
       <Form
         method="post"
-        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
       >
         <TextInput
           withAsterisk
@@ -102,6 +114,17 @@ export default function PageShoeEdit() {
           name="merk"
           required
           defaultValue={data.shoe.merk}
+        />
+
+        <Select
+          label="Category"
+          placeholder="Please choose one"
+          withAsterisk
+          size="md"
+          name="categoryId"
+          required
+          data={data.categoryOptions}
+          defaultValue={data.shoe.category.id}
         />
 
         <NumberInput

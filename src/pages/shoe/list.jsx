@@ -1,9 +1,9 @@
-import { Link, redirect, useLoaderData, Form } from "react-router-dom";
-import { ActionIcon, Badge, Button, Flex, Table, Title } from "@mantine/core";
-import { IconEye, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import { Link, redirect, useLoaderData, Form } from 'react-router-dom';
+import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
+import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 
 export async function loader() {
-  const response = await fetch("http://localhost:3000/shoe");
+  const response = await fetch('http://localhost:3000/shoe');
   const shoes = await response.json();
 
   return {
@@ -13,12 +13,12 @@ export async function loader() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const id = formData.get("id");
+  const id = formData.get('id');
   await fetch(`http://localhost:3000/shoe/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
   });
 
-  return redirect("/shoe");
+  return redirect('/shoe');
 }
 
 export default function PageShoeList() {
@@ -66,7 +66,7 @@ export default function PageShoeList() {
                 <Flex gap="sm">
                   <ActionIcon
                     component={Link}
-                    to="/shoe/1/detail"
+                    to={`/shoe/${shoe.id}/detail`}
                     variant="filled"
                     color="green"
                   >
@@ -75,7 +75,7 @@ export default function PageShoeList() {
 
                   <ActionIcon
                     component={Link}
-                    to="/shoe/1/edit"
+                    to={`/shoe/${shoe.id}/edit`}
                     variant="filled"
                     color="blue"
                   >

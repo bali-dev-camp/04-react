@@ -1,8 +1,8 @@
-import { Link, useLoaderData } from "react-router-dom";
-import { Button, Flex, Title, Image, Text, Badge, Group } from "@mantine/core";
-import { IconArrowBack } from "@tabler/icons-react";
+import { Link, useLoaderData } from 'react-router-dom';
+import { Button, Flex, Title, Image, Text, Badge, Group } from '@mantine/core';
+import { IconArrowBack } from '@tabler/icons-react';
 
-import imgShoe from "../../assets/images/shoe-example.jpg";
+import imgShoe from '../../assets/images/shoe-example.jpg';
 
 export async function loader({ params }) {
   const response = await fetch(`http://localhost:3000/shoe/${params.id}`);
@@ -38,7 +38,9 @@ export default function PageShoeDetail() {
 
         <Flex direction="column" gap="xs">
           <Flex direction="column" gap="xs" style={{ width: 500 }}>
-            <Flex>
+            <Flex gap="xs">
+              <Badge color="blue">{data.shoe.category.name}</Badge>
+
               {data.shoe.available ? (
                 <Badge color="green">Available</Badge>
               ) : (

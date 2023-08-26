@@ -2,20 +2,34 @@ import {
   Link,
   redirect,
   Form,
+  useLoaderData,
   useNavigation,
   useActionData,
-} from "react-router-dom";
+} from 'react-router-dom';
 import {
   Button,
   Flex,
   Group,
   NumberInput,
   Radio,
+  Select,
   TextInput,
   Textarea,
   Title,
-} from "@mantine/core";
-import { IconArrowBack } from "@tabler/icons-react";
+} from '@mantine/core';
+import { IconArrowBack } from '@tabler/icons-react';
+
+export async function loader() {
+  const response = await fetch('http://localhost:3000/category');
+  const payload = await response.json();
+
+  const shoes = payload.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }));
+
+  return { shoes };
+}
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -23,33 +37,34 @@ export async function action({ request }) {
 
   const errors = {};
 
-  if (Number(formData.get("qty")) < 1) {
-    errors.qty = "Qty should be more than zero";
+  if (Number(formData.get('qty')) < 1) {
+    errors.qty = 'Qty should be more than zero';
   }
 
-  if (Number(formData.get("price")) < 0) {
-    errors.price = "Price should be start from zero";
+  if (Number(formData.get('price')) < 0) {
+    errors.price = 'Price should be start from zero';
   }
 
   if (Object.keys(errors).length > 0) {
     return errors;
   }
 
-  await fetch("http://localhost:3000/shoe", {
-    method: "POST",
+  await fetch('http://localhost:3000/shoe', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
   });
 
-  return redirect("/shoe");
+  return redirect('/shoe');
 }
 
 export default function PageShoeCreate() {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  const isSubmitting = navigation.state === 'submitting';
 
+  const data = useLoaderData();
   const errors = useActionData();
 
   return (
@@ -71,7 +86,7 @@ export default function PageShoeCreate() {
 
       <Form
         method="post"
-        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
       >
         <TextInput
           withAsterisk
@@ -89,6 +104,16 @@ export default function PageShoeCreate() {
           placeholder="Input shoe brand"
           name="merk"
           required
+        />
+
+        <Select
+          label="Category"
+          placeholder="Please choose one"
+          withAsterisk
+          size="md"
+          name="categoryId"
+          required
+          data={data.shoes}
         />
 
         <NumberInput

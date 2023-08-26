@@ -1,15 +1,29 @@
-import { Link } from 'react-router-dom';
-import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
-import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { Link, redirect, useLoaderData, Form } from "react-router-dom";
+import { ActionIcon, Badge, Button, Flex, Table, Title } from "@mantine/core";
+import { IconEye, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 
-const elements = [
-  { name: 'Dark Night', brand: 'Nike', qty: 20, availability: true },
-  { name: 'Pink Venom', brand: 'Adidas', qty: 0, availability: false },
-  { name: 'Blue Guard', brand: 'Vans', qty: 11, availability: true },
-  { name: 'Purple Shy', brand: 'Swallow', qty: 2, availability: true },
-];
+export async function loader() {
+  const response = await fetch("http://localhost:3000/shoe");
+  const shoes = await response.json();
+
+  return {
+    shoes,
+  };
+}
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const id = formData.get("id");
+  await fetch(`http://localhost:3000/shoe/${id}`, {
+    method: "DELETE",
+  });
+
+  return redirect("/shoe");
+}
 
 export default function PageShoeList() {
+  const data = useLoaderData();
+
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -34,15 +48,15 @@ export default function PageShoeList() {
         </thead>
 
         <tbody>
-          {elements.map((element) => (
-            <tr key={element.name}>
-              <td>{element.name}</td>
-              <td>{element.brand}</td>
+          {data.shoes.map((shoe) => (
+            <tr key={shoe.id}>
+              <td>{shoe.name}</td>
+              <td>{shoe.merk}</td>
               <td>
-                <Badge>{element.qty}</Badge>
+                <Badge>{shoe.qty}</Badge>
               </td>
               <td>
-                {element.availability ? (
+                {shoe.available ? (
                   <Badge color="green">Yes</Badge>
                 ) : (
                   <Badge color="red">No</Badge>
@@ -68,9 +82,12 @@ export default function PageShoeList() {
                     <IconPencil size={20} />
                   </ActionIcon>
 
-                  <ActionIcon variant="filled" color="red">
-                    <IconTrash size={20} />
-                  </ActionIcon>
+                  <Form method="post">
+                    <input type="hidden" name="id" defaultValue={shoe.id} />
+                    <ActionIcon variant="filled" color="red" type="submit">
+                      <IconTrash size={20} />
+                    </ActionIcon>
+                  </Form>
                 </Flex>
               </td>
             </tr>

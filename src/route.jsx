@@ -1,20 +1,30 @@
-import { Outlet, createBrowserRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter } from "react-router-dom";
 
-import LayoutMain from './layouts/main';
-import PageHome from './pages/home';
+import LayoutMain from "./layouts/main";
+import PageHome from "./pages/home";
 
-import PageShoeList from './pages/shoe/list';
-import PageShoeDetail from './pages/shoe/detail';
-import PageShoeCreate from './pages/shoe/create';
-import PageShoeEdit from './pages/shoe/edit';
+import PageShoeList, {
+  loader as loaderShoeList,
+  action as actionShoeList,
+} from "./pages/shoe/list";
+import PageShoeDetail, {
+  loader as loaderShoeDetail,
+} from "./pages/shoe/detail";
+import PageShoeCreate, {
+  action as actionShoeCreate,
+} from "./pages/shoe/create";
+import PageShoeEdit, {
+  loader as loaderShoeEdit,
+  action as actionShoeEdit,
+} from "./pages/shoe/edit";
 
-import PageCategoryList from './pages/category/list';
-import PageCategoryCreate from './pages/category/create';
-import PageCategoryEdit from './pages/category/edit';
+import PageCategoryList from "./pages/category/list";
+import PageCategoryCreate from "./pages/category/create";
+import PageCategoryEdit from "./pages/category/edit";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <LayoutMain />,
     children: [
       {
@@ -22,22 +32,40 @@ const router = createBrowserRouter([
         element: <PageHome />,
       },
       {
-        path: '/shoe',
+        path: "/shoe",
         element: <Outlet />,
         children: [
-          { index: true, element: <PageShoeList /> },
-          { path: '/shoe/:id/detail', element: <PageShoeDetail /> },
-          { path: '/shoe/create', element: <PageShoeCreate /> },
-          { path: '/shoe/:id/edit', element: <PageShoeEdit /> },
+          {
+            index: true,
+            element: <PageShoeList />,
+            loader: loaderShoeList,
+            action: actionShoeList,
+          },
+          {
+            path: ":id/detail",
+            element: <PageShoeDetail />,
+            loader: loaderShoeDetail,
+          },
+          {
+            path: "create",
+            element: <PageShoeCreate />,
+            action: actionShoeCreate,
+          },
+          {
+            path: ":id/edit",
+            element: <PageShoeEdit />,
+            loader: loaderShoeEdit,
+            action: actionShoeEdit,
+          },
         ],
       },
       {
-        path: '/category',
+        path: "/category",
         element: <Outlet />,
         children: [
           { index: true, element: <PageCategoryList /> },
-          { path: '/category/create', element: <PageCategoryCreate /> },
-          { path: '/category/:id/edit', element: <PageCategoryEdit /> },
+          { path: "create", element: <PageCategoryCreate /> },
+          { path: ":id/edit", element: <PageCategoryEdit /> },
         ],
       },
     ],

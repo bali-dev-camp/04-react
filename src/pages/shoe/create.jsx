@@ -1,4 +1,10 @@
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  redirect,
+  Form,
+  useNavigation,
+  useActionData,
+} from "react-router-dom";
 import {
   Button,
   Flex,
@@ -8,10 +14,44 @@ import {
   TextInput,
   Textarea,
   Title,
-} from '@mantine/core';
-import { IconArrowBack } from '@tabler/icons-react';
+} from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons-react";
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const payload = Object.fromEntries(formData);
+
+  const errors = {};
+
+  if (Number(formData.get("qty")) < 1) {
+    errors.qty = "Qty should be more than zero";
+  }
+
+  if (Number(formData.get("price")) < 0) {
+    errors.price = "Price should be start from zero";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return errors;
+  }
+
+  await fetch("http://localhost:3000/shoe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return redirect("/shoe");
+}
 
 export default function PageShoeCreate() {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+
+  const errors = useActionData();
+
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -29,13 +69,17 @@ export default function PageShoeCreate() {
         </Button>
       </Flex>
 
-      <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Form
+        method="post"
+        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+      >
         <TextInput
           withAsterisk
           size="md"
           label="Name"
           placeholder="Input shoe name"
           name="name"
+          required
         />
 
         <TextInput
@@ -44,6 +88,7 @@ export default function PageShoeCreate() {
           label="Brand"
           placeholder="Input shoe brand"
           name="merk"
+          required
         />
 
         <NumberInput
@@ -52,6 +97,8 @@ export default function PageShoeCreate() {
           label="Quantity"
           placeholder="Input shoe qty"
           name="qty"
+          required
+          error={errors?.qty}
         />
 
         <NumberInput
@@ -60,6 +107,8 @@ export default function PageShoeCreate() {
           label="Price"
           placeholder="Input shoe price"
           name="price"
+          required
+          error={errors?.price}
         />
 
         <Textarea
@@ -68,6 +117,7 @@ export default function PageShoeCreate() {
           placeholder="Input shoe desc"
           label="Description"
           name="desc"
+          required
         />
 
         <Radio.Group
@@ -75,6 +125,7 @@ export default function PageShoeCreate() {
           withAsterisk
           size="md"
           name="available"
+          required
         >
           <Group mt="xs">
             <Radio value="true" label="Yes" />
@@ -83,9 +134,11 @@ export default function PageShoeCreate() {
         </Radio.Group>
 
         <Group position="left" mt="md">
-          <Button type="submit">Submit</Button>
+          <Button type="submit" loading={isSubmitting}>
+            Submit
+          </Button>
         </Group>
-      </form>
+      </Form>
     </>
   );
 }

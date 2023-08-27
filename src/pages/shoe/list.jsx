@@ -1,6 +1,17 @@
-import { Link, redirect, useLoaderData, Form } from 'react-router-dom';
-import { ActionIcon, Badge, Button, Flex, Table, Title } from '@mantine/core';
+import { Link, useLoaderData, redirect, Form } from 'react-router-dom';
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Flex,
+  Group,
+  Modal,
+  Table,
+  Title,
+} from '@mantine/core';
 import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 
 export async function loader() {
   const response = await fetch('http://localhost:3000/shoe');
@@ -23,6 +34,8 @@ export async function action({ request }) {
 
 export default function PageShoeList() {
   const data = useLoaderData();
+  const [opened, { open, close }] = useDisclosure(false);
+  const [deletedId, setDeletedId] = useState();
 
   return (
     <>
@@ -35,6 +48,29 @@ export default function PageShoeList() {
           Add
         </Button>
       </Flex>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        position={{ bottom: 20, left: 20 }}
+        style={{ textAlign: 'center' }}
+      >
+        <Title order={3}>Are you sure to delete data?</Title>
+
+        <Group gap="md" position="center" mt="md">
+          <Button color="gray" onClick={close}>
+            Cancel
+          </Button>
+
+          <Form method="post">
+            <input type="hidden" name="id" defaultValue={deletedId} />
+            <Button variant="filled" color="red" type="submit" onClick={close}>
+              Delete
+            </Button>
+          </Form>
+        </Group>
+      </Modal>
 
       <Table>
         <thead>
@@ -82,12 +118,16 @@ export default function PageShoeList() {
                     <IconPencil size={20} />
                   </ActionIcon>
 
-                  <Form method="post">
-                    <input type="hidden" name="id" defaultValue={shoe.id} />
-                    <ActionIcon variant="filled" color="red" type="submit">
-                      <IconTrash size={20} />
-                    </ActionIcon>
-                  </Form>
+                  <ActionIcon
+                    variant="filled"
+                    color="red"
+                    onClick={() => {
+                      open();
+                      setDeletedId(shoe.id);
+                    }}
+                  >
+                    <IconTrash size={20} />
+                  </ActionIcon>
                 </Flex>
               </td>
             </tr>

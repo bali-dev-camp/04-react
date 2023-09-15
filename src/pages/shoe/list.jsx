@@ -57,7 +57,9 @@ export default function PageShoeList() {
       labels: { confirm: 'Delete', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
       onConfirm: () => {
-        submit({ id }, { method: 'post' });
+        const formData = new FormData();
+        formData.append('id', id);
+        submit(formData, { method: 'post' });
       },
     });
   }

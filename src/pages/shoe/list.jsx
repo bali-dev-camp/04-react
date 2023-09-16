@@ -1,6 +1,23 @@
-import { Link, redirect, useLoaderData, Form } from "react-router-dom";
-import { ActionIcon, Badge, Button, Flex, Table, Title } from "@mantine/core";
+import { useEffect } from "react";
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useSubmit,
+  useNavigation,
+} from "react-router-dom";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Flex,
+  Loader,
+  Table,
+  Title,
+  Text,
+} from "@mantine/core";
 import { IconEye, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
 
 export async function loader() {
   const response = await fetch("http://localhost:3000/shoe");
@@ -23,6 +40,48 @@ export async function action({ request }) {
 
 export default function PageShoeList() {
   const data = useLoaderData();
+
+  const submit = useSubmit();
+
+  function handleDelete(id) {
+    modals.openConfirmModal({
+      title: "Delete Shoe",
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete this shoe? This action is destructive
+          and your data will lost.
+        </Text>
+      ),
+      centered: true,
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Canceled"),
+      onConfirm: () => {
+        const formData = new FormData();
+        formData.append("id", id);
+        submit(formData, { method: "post" });
+      },
+    });
+  }
+
+  const navigation = useNavigation();
+  useEffect(() => {
+    if (navigation.state === "submitting") {
+      modals.open({
+        title: "Loading...",
+        closeOnClickOutside: true,
+        closeOnEscape: false,
+        withCloseButton: false,
+        children: (
+          <Flex justify="center" align="center" direction="row">
+            <Loader size="lg" />
+          </Flex>
+        ),
+      });
+    } else {
+      modals.closeAll();
+    }
+  }, [navigation.state]);
 
   return (
     <>
@@ -82,12 +141,20 @@ export default function PageShoeList() {
                     <IconPencil size={20} />
                   </ActionIcon>
 
-                  <Form method="post">
+                  {/* <Form method="post">
                     <input type="hidden" name="id" defaultValue={shoe.id} />
                     <ActionIcon variant="filled" color="red" type="submit">
                       <IconTrash size={20} />
                     </ActionIcon>
-                  </Form>
+                  </Form> */}
+
+                  <ActionIcon
+                    variant="filled"
+                    color="red"
+                    onClick={() => handleDelete(shoe.id)}
+                  >
+                    <IconTrash size={20} />
+                  </ActionIcon>
                 </Flex>
               </td>
             </tr>

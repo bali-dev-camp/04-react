@@ -5,6 +5,7 @@ import {
   useActionData,
   Form,
   useNavigation,
+  useSubmit,
 } from "react-router-dom";
 import {
   Button,
@@ -18,6 +19,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconArrowBack } from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
 
 export async function loader({ params }) {
   const shoeResponse = await fetch(`http://localhost:3000/shoe/${params.id}`);
@@ -68,6 +70,17 @@ export default function PageShoeEdit() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
+  const submit = useSubmit();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    modals.openConfirmModal({
+      onConfirm: () => {
+        submit(event.currentTarget);
+      },
+    });
+  }
+
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -88,6 +101,9 @@ export default function PageShoeEdit() {
       <Form
         method="post"
         style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        onSubmit={(event) => {
+          handleSubmit(event);
+        }}
       >
         <TextInput
           withAsterisk
@@ -172,7 +188,12 @@ export default function PageShoeEdit() {
         </Radio.Group>
 
         <Group position="left" mt="md">
-          <Button type="submit" loading={isSubmitting}>
+          <Button
+            type="submit"
+            loading={isSubmitting}
+            name="_action"
+            value="edit"
+          >
             Submit
           </Button>
         </Group>

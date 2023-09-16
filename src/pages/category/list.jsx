@@ -1,15 +1,29 @@
-import { Link } from 'react-router-dom';
-import { ActionIcon, Button, Flex, Table, Title } from '@mantine/core';
-import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { Form, Link, redirect, useLoaderData } from "react-router-dom";
+import { ActionIcon, Button, Flex, Table, Title } from "@mantine/core";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 
-const elements = [
-  { name: 'Sport' },
-  { name: 'Casual' },
-  { name: 'School' },
-  { name: 'Adventure' },
-];
+export async function loader() {
+  const response = await fetch("http://localhost:3000/category");
+  const categories = await response.json();
+
+  console.log(categories);
+
+  return { categories };
+}
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const id = formData.get("id");
+  await fetch(`http://localhost:3000/category/${id}`, {
+    method: "DELETE",
+  });
+
+  return redirect("/category");
+}
 
 export default function PageCategoryList() {
+  const data = useLoaderData();
+
   return (
     <>
       <Flex direction="row" align="center" justify="space-between" mb="md">
@@ -31,23 +45,27 @@ export default function PageCategoryList() {
         </thead>
 
         <tbody>
-          {elements.map((element) => (
-            <tr key={element.name}>
-              <td>{element.name}</td>
+          {data.categories.map((category) => (
+            <tr key={category.name}>
+              <td>{category.name}</td>
               <td style={{ width: 150 }}>
                 <Flex gap="sm">
                   <ActionIcon
-                    component="a"
-                    href="/category/1/edit"
+                    component={Link}
+                    to={`/category/${category.id}/edit`}
                     variant="filled"
                     color="edit"
                   >
                     <IconPencil size={20} />
                   </ActionIcon>
 
-                  <ActionIcon variant="filled" color="red">
-                    <IconTrash size={20} />
-                  </ActionIcon>
+                  <Form method="post">
+                    <input type="hidden" name="id" defaultValue={category.id} />
+
+                    <ActionIcon variant="filled" color="red" type="submit">
+                      <IconTrash size={20} />
+                    </ActionIcon>
+                  </Form>
                 </Flex>
               </td>
             </tr>

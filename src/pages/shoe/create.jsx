@@ -4,6 +4,7 @@ import {
   Form,
   useNavigation,
   useActionData,
+  useLoaderData,
 } from "react-router-dom";
 import {
   Button,
@@ -11,28 +12,42 @@ import {
   Group,
   NumberInput,
   Radio,
+  Select,
   TextInput,
   Textarea,
   Title,
 } from "@mantine/core";
 import { IconArrowBack } from "@tabler/icons-react";
+import { z } from "zod";
+
+export async function loader() {
+  const response = await fetch("http://localhost:3000/category");
+  const categories = await response.json();
+
+  return {
+    categories,
+  };
+}
 
 export async function action({ request }) {
   const formData = await request.formData();
   const payload = Object.fromEntries(formData);
 
-  const errors = {};
+  const createShoeSchema = z.object({
+    name: z.string().nonempty({
+      message: "Isi datanya cuk",
+    }),
+    merk: z.string().nonempty(),
+    categoryId: z.string().nonempty(),
+    qty: z.coerce.number().gt(0),
+    price: z.coerce.number().gte(0),
+    desc: z.string().nonempty(),
+    available: z.enum(["true", "false"]),
+  });
 
-  if (Number(formData.get("qty")) < 1) {
-    errors.qty = "Qty should be more than zero";
-  }
-
-  if (Number(formData.get("price")) < 0) {
-    errors.price = "Price should be start from zero";
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return errors;
+  const createShoe = createShoeSchema.safeParse(payload);
+  if (!createShoe.success) {
+    return { errors: createShoe.error.flatten() };
   }
 
   await fetch("http://localhost:3000/shoe", {
@@ -50,7 +65,17 @@ export default function PageShoeCreate() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const errors = useActionData();
+  const actionData = useActionData();
+  const errors = actionData?.errors?.fieldErrors;
+
+  const data = useLoaderData();
+
+  const categoryOptions = data.categories.map((category) => {
+    return {
+      label: category.name,
+      value: category.id,
+    };
+  });
 
   return (
     <>
@@ -80,6 +105,7 @@ export default function PageShoeCreate() {
           placeholder="Input shoe name"
           name="name"
           required
+          error={errors?.name?.[0]}
         />
 
         <TextInput
@@ -89,6 +115,18 @@ export default function PageShoeCreate() {
           placeholder="Input shoe brand"
           name="merk"
           required
+          error={errors?.merk?.[0]}
+        />
+
+        <Select
+          label="Category"
+          placeholder="Please choose one"
+          withAsterisk
+          size="md"
+          name="categoryId"
+          required
+          data={categoryOptions}
+          error={errors?.categoryId?.[0]}
         />
 
         <NumberInput
@@ -98,7 +136,7 @@ export default function PageShoeCreate() {
           placeholder="Input shoe qty"
           name="qty"
           required
-          error={errors?.qty}
+          error={errors?.qty?.[0]}
         />
 
         <NumberInput
@@ -108,7 +146,7 @@ export default function PageShoeCreate() {
           placeholder="Input shoe price"
           name="price"
           required
-          error={errors?.price}
+          error={errors?.price?.[0]}
         />
 
         <Textarea
@@ -118,6 +156,7 @@ export default function PageShoeCreate() {
           label="Description"
           name="desc"
           required
+          error={errors?.desc?.[0]}
         />
 
         <Radio.Group
@@ -126,6 +165,7 @@ export default function PageShoeCreate() {
           size="md"
           name="available"
           required
+          error={errors?.available?.[0]}
         >
           <Group mt="xs">
             <Radio value="true" label="Yes" />

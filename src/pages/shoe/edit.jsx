@@ -12,6 +12,7 @@ import {
   Group,
   NumberInput,
   Radio,
+  Select,
   TextInput,
   Textarea,
   Title,
@@ -19,11 +20,15 @@ import {
 import { IconArrowBack } from "@tabler/icons-react";
 
 export async function loader({ params }) {
-  const response = await fetch(`http://localhost:3000/shoe/${params.id}`);
-  const shoe = await response.json();
+  const shoeResponse = await fetch(`http://localhost:3000/shoe/${params.id}`);
+  const shoe = await shoeResponse.json();
+
+  const categoriesResponse = await fetch("http://localhost:3000/category");
+  const categories = await categoriesResponse.json();
 
   return {
     shoe,
+    categories,
   };
 }
 
@@ -102,6 +107,22 @@ export default function PageShoeEdit() {
           name="merk"
           required
           defaultValue={data.shoe.merk}
+        />
+
+        <Select
+          label="Category"
+          placeholder="Please choose one"
+          withAsterisk
+          size="md"
+          name="categoryId"
+          required
+          data={data.categories.map((category) => {
+            return {
+              label: category.name,
+              value: category.id,
+            };
+          })}
+          defaultValue={data.shoe.category.id}
         />
 
         <NumberInput

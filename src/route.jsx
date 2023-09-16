@@ -7,10 +7,12 @@ import PageShoeList, {
   loader as loaderShoeList,
   action as actionShoeList,
 } from "./pages/shoe/list";
+
 import PageShoeDetail, {
   loader as loaderShoeDetail,
 } from "./pages/shoe/detail";
 import PageShoeCreate, {
+  loader as loaderShoeCreate,
   action as actionShoeCreate,
 } from "./pages/shoe/create";
 import PageShoeEdit, {
@@ -18,9 +20,19 @@ import PageShoeEdit, {
   action as actionShoeEdit,
 } from "./pages/shoe/edit";
 
-import PageCategoryList from "./pages/category/list";
-import PageCategoryCreate from "./pages/category/create";
-import PageCategoryEdit from "./pages/category/edit";
+import PageCategoryList, {
+  action as actionCategoryList,
+  loader as loaderCategorList,
+} from "./pages/category/list";
+
+import PageCategoryCreate, {
+  action as actionCategoryCreate,
+} from "./pages/category/create";
+
+import PageCategoryEdit, {
+  loader as loaderCategoryEdit,
+  action as actionCategoryEdit,
+} from "./pages/category/edit";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +61,7 @@ const router = createBrowserRouter([
           {
             path: "create",
             element: <PageShoeCreate />,
+            loader: loaderShoeCreate,
             action: actionShoeCreate,
           },
           {
@@ -63,9 +76,23 @@ const router = createBrowserRouter([
         path: "/category",
         element: <Outlet />,
         children: [
-          { index: true, element: <PageCategoryList /> },
-          { path: "create", element: <PageCategoryCreate /> },
-          { path: ":id/edit", element: <PageCategoryEdit /> },
+          {
+            index: true,
+            element: <PageCategoryList />,
+            action: actionCategoryList,
+            loader: loaderCategorList,
+          },
+          {
+            path: "create",
+            element: <PageCategoryCreate />,
+            action: actionCategoryCreate,
+          },
+          {
+            path: ":id/edit",
+            element: <PageCategoryEdit />,
+            loader: loaderCategoryEdit,
+            action: actionCategoryEdit,
+          },
         ],
       },
     ],
